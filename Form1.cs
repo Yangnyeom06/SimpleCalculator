@@ -23,13 +23,14 @@ namespace SimpleCalculator
 
         private void buttonOprInput(string value)
         {
-            resultText = resultText.TrimEnd();
+            if (string.IsNullOrWhiteSpace(resultText)) return;
 
-            if (resultText.Length == 0) return;
-
-            if ("+-*/".Contains(resultText.Last()))
+            if (resultText.EndsWith(" + ") ||
+                resultText.EndsWith(" - ") ||
+                resultText.EndsWith(" * ") ||
+                resultText.EndsWith(" / "))
             {
-                resultText = resultText.Substring(0, resultText.Length - 1);
+                resultText = resultText.Substring(0, resultText.Length - 3);
             }
 
             resultText += $" {value} ";
