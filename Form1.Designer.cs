@@ -43,6 +43,12 @@
             button0 = new Button();
             buttonAdd = new Button();
             buttonCal = new Button();
+            buttonSub = new Button();
+            buttonMulti = new Button();
+            buttonDiv = new Button();
+            buttonCE = new Button();
+            buttonC = new Button();
+            buttonDel = new Button();
             SuspendLayout();
             // 
             // title
@@ -202,11 +208,83 @@
             buttonCal.UseVisualStyleBackColor = true;
             buttonCal.Click += buttonCal_Click;
             // 
+            // buttonSub
+            // 
+            buttonSub.Font = new Font("맑은 고딕", 15F);
+            buttonSub.Location = new Point(257, 345);
+            buttonSub.Name = "buttonSub";
+            buttonSub.Size = new Size(72, 47);
+            buttonSub.TabIndex = 15;
+            buttonSub.Text = "-";
+            buttonSub.UseVisualStyleBackColor = true;
+            buttonSub.Click += buttonSub_Click;
+            // 
+            // buttonMulti
+            // 
+            buttonMulti.Font = new Font("맑은 고딕", 15F);
+            buttonMulti.Location = new Point(257, 398);
+            buttonMulti.Name = "buttonMulti";
+            buttonMulti.Size = new Size(72, 47);
+            buttonMulti.TabIndex = 16;
+            buttonMulti.Text = "×";
+            buttonMulti.UseVisualStyleBackColor = true;
+            buttonMulti.Click += buttonMulti_Click;
+            // 
+            // buttonDiv
+            // 
+            buttonDiv.Font = new Font("맑은 고딕", 15F);
+            buttonDiv.Location = new Point(257, 451);
+            buttonDiv.Name = "buttonDiv";
+            buttonDiv.Size = new Size(72, 47);
+            buttonDiv.TabIndex = 17;
+            buttonDiv.Text = "÷";
+            buttonDiv.UseVisualStyleBackColor = true;
+            buttonDiv.Click += buttonDiv_Click;
+            // 
+            // buttonCE
+            // 
+            buttonCE.Font = new Font("맑은 고딕", 15F);
+            buttonCE.Location = new Point(23, 292);
+            buttonCE.Name = "buttonCE";
+            buttonCE.Size = new Size(72, 47);
+            buttonCE.TabIndex = 18;
+            buttonCE.Text = "CE";
+            buttonCE.UseVisualStyleBackColor = true;
+            buttonCE.Click += buttonCE_Click;
+            // 
+            // buttonC
+            // 
+            buttonC.Font = new Font("맑은 고딕", 15F);
+            buttonC.Location = new Point(101, 292);
+            buttonC.Name = "buttonC";
+            buttonC.Size = new Size(72, 47);
+            buttonC.TabIndex = 19;
+            buttonC.Text = "C";
+            buttonC.UseVisualStyleBackColor = true;
+            buttonC.Click += buttonC_Click;
+            // 
+            // buttonDel
+            // 
+            buttonDel.Font = new Font("맑은 고딕", 15F);
+            buttonDel.Location = new Point(179, 292);
+            buttonDel.Name = "buttonDel";
+            buttonDel.Size = new Size(72, 47);
+            buttonDel.TabIndex = 20;
+            buttonDel.Text = "Del";
+            buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(374, 574);
+            Controls.Add(buttonDel);
+            Controls.Add(buttonC);
+            Controls.Add(buttonCE);
+            Controls.Add(buttonDiv);
+            Controls.Add(buttonMulti);
+            Controls.Add(buttonSub);
             Controls.Add(buttonCal);
             Controls.Add(buttonAdd);
             Controls.Add(button0);
@@ -245,5 +323,11 @@
         private Button button0;
         private Button buttonAdd;
         private Button buttonCal;
+        private Button buttonSub;
+        private Button buttonMulti;
+        private Button buttonDiv;
+        private Button buttonCE;
+        private Button buttonC;
+        private Button buttonDel;
     }
 }

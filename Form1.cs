@@ -94,6 +94,19 @@ namespace SimpleCalculator
         {
             buttonOprInput("+");
         }
+        private void buttonSub_Click(object sender, EventArgs e)
+        {
+            buttonOprInput("-");
+        }
+
+        private void buttonMulti_Click(object sender, EventArgs e)
+        {
+            buttonOprInput("*");
+        }
+        private void buttonDiv_Click(object sender, EventArgs e)
+        {
+            buttonOprInput("/");
+        }
 
         private void buttonCal_Click(object sender, EventArgs e)
         {
@@ -102,19 +115,96 @@ namespace SimpleCalculator
                 DataTable dt = new DataTable();
                 var result = dt.Compute(resultText, "");
 
-                resultText += $" = {result.ToString()}";
-                textResultBox.Text = resultText;
-                textInputBox.Text = result.ToString();
-                resultText = result.ToString();
-                inputText = result.ToString();
-  
+                double num = Convert.ToDouble(result);
+
+                string finalResult = (num % 1 == 0) ? ((int)num).ToString() : num.ToString();
+
+                textResultBox.Text = $"{resultText} = {finalResult}";
+                textInputBox.Text = finalResult;
+
+                resultText = finalResult;
+                inputText = finalResult;
+
+
             }
             catch
             {
                 textResultBox.Text = "Error";
                 resultText = "";
-  
+                inputText = "";
             }
+        }
+
+        private void buttonC_Click(object sender, EventArgs e)
+        {
+            resultText = "";
+            textResultBox.Text = resultText;
+
+            inputText = "";
+            textInputBox.Text = inputText;
+        }
+
+        private void buttonCE_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(resultText)) return;
+
+            string[] operators = { " + ", " - ", " * ", " / " };
+
+            foreach (var op in operators)
+            {
+                if (resultText.EndsWith(op))
+                {
+                    resultText = resultText.Substring(0, resultText.Length - op.Length);
+                    textResultBox.Text = resultText;
+                    return;
+                }
+            }
+
+            int lastSpaceIndex = resultText.LastIndexOf(' ');
+            if (lastSpaceIndex == -1)
+            {
+                resultText = "";
+            }
+            else
+            {
+                resultText = resultText.Substring(0, lastSpaceIndex + 1);
+            }
+
+            textResultBox.Text = resultText;
+
+            inputText = "";
+            textInputBox.Text = "";
+        }
+
+        private void buttonDel_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(resultText)) return;
+
+            string[] operators = { " + ", " - ", " * ", " / " };
+
+            bool opRemoved = false;
+            foreach (var op in operators)
+            {
+                if (resultText.EndsWith(op))
+                {
+                    resultText = resultText.Substring(0, resultText.Length - op.Length);
+                    opRemoved = true;
+                    break;
+                }
+            }
+
+            if (!opRemoved && resultText.Length > 0)
+            {
+                resultText = resultText.Substring(0, resultText.Length - 1);
+            }
+
+            if (inputText.Length > 0)
+            {
+                inputText = inputText.Substring(0, inputText.Length - 1);
+            }
+
+            textResultBox.Text = resultText;
+            textInputBox.Text = inputText;
         }
     }
 }
