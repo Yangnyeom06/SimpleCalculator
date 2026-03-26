@@ -11,10 +11,20 @@ namespace SimpleCalculator
         public Form1()
         {
             InitializeComponent();
+            this.KeyPreview = true;  // Form이 키 입력을 먼저 받도록
+            this.KeyDown += Form1_KeyDown;
         }
 
         private void buttonNumInput(string value)
         {
+            if (inputText == resultText)
+            {
+                resultText = "";
+                resultTempText = "";
+                inputText = "";
+                textResultBox.Text = "";
+            }
+
             inputText += value;
             textInputBox.Text = inputText;
 
@@ -141,7 +151,9 @@ namespace SimpleCalculator
                 textInputBox.Text = finalResult;
 
                 resultText = finalResult;
+
                 inputText = finalResult;
+
                 resultTempText = display;
             }
             catch
@@ -287,5 +299,51 @@ namespace SimpleCalculator
             textInputBox.Text = inputText;
             textResultBox.Text = resultTempText;
         }
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)  // 숫자 0~9
+            {
+                buttonNumInput((e.KeyCode - Keys.D0).ToString());
+            }
+            else if (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9) // 숫자 패드
+            {
+                buttonNumInput((e.KeyCode - Keys.NumPad0).ToString());
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Add:
+                    case Keys.Oemplus when e.Shift: // '+' 키
+                        buttonOprInput("+");
+                        break;
+                    case Keys.Subtract:
+                    case Keys.OemMinus:               // '-' 키
+                        buttonOprInput("-");
+                        break;
+                    case Keys.Multiply:                // '*' 패드
+                        buttonOprInput("*");
+                        break;
+                    case Keys.Divide:                  // '/' 패드
+                    case Keys.OemQuestion:             // '/' 일반 키보드
+                        buttonOprInput("/");
+                        break;
+                    case Keys.Decimal:
+                    case Keys.OemPeriod:
+                        buttonDot_Click(null, null);
+                        break;
+                    case Keys.Enter:
+                        buttonCal_Click(null, null);
+                        break;
+                    case Keys.Back:
+                        buttonDel_Click(null, null);
+                        break;
+                    case Keys.Escape:
+                        buttonC_Click(null, null);
+                        break;
+                }
+            }
+        }
+
     }
 }

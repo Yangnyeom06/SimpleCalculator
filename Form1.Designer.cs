@@ -297,7 +297,6 @@
             buttonPM.Text = "+/-";
             buttonPM.UseVisualStyleBackColor = true;
             buttonPM.Click += buttonPM_Click;
-          
             // 
             // Form1
             // 
