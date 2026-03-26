@@ -47,7 +47,15 @@ namespace SimpleCalculator
 
             inputText = "";
 
-            textInputBox.Text = displayOp;
+            string[] parts = resultTempText.Split(' ');
+            for (int i = parts.Length - 1; i >= 0; i--)
+            {
+                if (!string.IsNullOrEmpty(parts[i]) && !"+-¡¿¡À".Contains(parts[i]))
+                {
+                    textInputBox.Text = parts[i];
+                    break;
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
