@@ -4,6 +4,7 @@ namespace SimpleCalculator
 {
     public partial class Form1 : Form
     {
+        string resultTempText = "";
         string resultText = "";
         string inputText = "";
 
@@ -14,16 +15,21 @@ namespace SimpleCalculator
 
         private void buttonNumInput(string value)
         {
-            inputText += $"{value}";
+            inputText += value;
             textInputBox.Text = inputText;
 
-            resultText += $"{value}";
-            textResultBox.Text = resultText;
+            resultText += value;
+            resultTempText += value;
+            textResultBox.Text = resultTempText;
         }
 
         private void buttonOprInput(string value)
         {
             if (string.IsNullOrWhiteSpace(resultText)) return;
+
+            string displayOp = value;
+            if (value == "*") displayOp = "¡¿";
+            else if (value == "/") displayOp = "¡À";
 
             if (resultText.EndsWith(" + ") ||
                 resultText.EndsWith(" - ") ||
@@ -31,13 +37,17 @@ namespace SimpleCalculator
                 resultText.EndsWith(" / "))
             {
                 resultText = resultText.Substring(0, resultText.Length - 3);
+                resultTempText = resultTempText.Substring(0, resultTempText.Length - 3);
             }
 
             resultText += $" {value} ";
-            textResultBox.Text = resultText;
+            resultTempText += $" {displayOp} ";
+
+            textResultBox.Text = resultTempText;
 
             inputText = "";
-            textInputBox.Text = inputText;
+
+            textInputBox.Text = displayOp;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -116,32 +126,33 @@ namespace SimpleCalculator
                 var result = dt.Compute(resultText, "");
 
                 double num = Convert.ToDouble(result);
-
                 string finalResult = (num % 1 == 0) ? ((int)num).ToString() : num.ToString();
 
-                textResultBox.Text = $"{resultText} = {finalResult}";
+                string display = $"{resultTempText} = {finalResult}";
+                textResultBox.Text = display;
                 textInputBox.Text = finalResult;
 
                 resultText = finalResult;
                 inputText = finalResult;
-
-
+                resultTempText = display;
             }
             catch
             {
                 textResultBox.Text = "Error";
                 resultText = "";
                 inputText = "";
+                resultTempText = "";
             }
         }
 
         private void buttonC_Click(object sender, EventArgs e)
         {
             resultText = "";
-            textResultBox.Text = resultText;
-
+            resultTempText = "";
             inputText = "";
-            textInputBox.Text = inputText;
+
+            textResultBox.Text = "";
+            textInputBox.Text = "";
         }
 
         private void buttonCE_Click(object sender, EventArgs e)
@@ -149,31 +160,30 @@ namespace SimpleCalculator
             if (string.IsNullOrWhiteSpace(resultText)) return;
 
             string[] operators = { " + ", " - ", " * ", " / " };
+            string[] displayOperators = { " + ", " - ", " ¡¿ ", " ¡À " };
 
-            foreach (var op in operators)
+            for (int i = 0; i < operators.Length; i++)
             {
-                if (resultText.EndsWith(op))
+                if (resultText.EndsWith(operators[i]))
                 {
-                    resultText = resultText.Substring(0, resultText.Length - op.Length);
-                    textResultBox.Text = resultText;
+                    resultText = resultText.Substring(0, resultText.Length - operators[i].Length);
+                    resultTempText = resultTempText.Substring(0, resultTempText.Length - displayOperators[i].Length);
+
+                    textResultBox.Text = resultTempText;
+                    textInputBox.Text = inputText;
                     return;
                 }
             }
 
-            int lastSpaceIndex = resultText.LastIndexOf(' ');
-            if (lastSpaceIndex == -1)
+            if (!string.IsNullOrEmpty(inputText))
             {
-                resultText = "";
-            }
-            else
-            {
-                resultText = resultText.Substring(0, lastSpaceIndex + 1);
-            }
+                resultText = resultText.Substring(0, resultText.Length - inputText.Length);
+                resultTempText = resultTempText.Substring(0, resultTempText.Length - inputText.Length);
 
-            textResultBox.Text = resultText;
-
-            inputText = "";
-            textInputBox.Text = "";
+                inputText = "";
+                textResultBox.Text = resultTempText;
+                textInputBox.Text = inputText;
+            }
         }
 
         private void buttonDel_Click(object sender, EventArgs e)
@@ -181,13 +191,16 @@ namespace SimpleCalculator
             if (string.IsNullOrEmpty(resultText)) return;
 
             string[] operators = { " + ", " - ", " * ", " / " };
+            string[] displayOperators = { " + ", " - ", " ¡¿ ", " ¡À " };
 
             bool opRemoved = false;
-            foreach (var op in operators)
+
+            for (int i = 0; i < operators.Length; i++)
             {
-                if (resultText.EndsWith(op))
+                if (resultText.EndsWith(operators[i]))
                 {
-                    resultText = resultText.Substring(0, resultText.Length - op.Length);
+                    resultText = resultText.Substring(0, resultText.Length - operators[i].Length);
+                    resultTempText = resultTempText.Substring(0, resultTempText.Length - displayOperators[i].Length);
                     opRemoved = true;
                     break;
                 }
@@ -196,15 +209,75 @@ namespace SimpleCalculator
             if (!opRemoved && resultText.Length > 0)
             {
                 resultText = resultText.Substring(0, resultText.Length - 1);
+                resultTempText = resultTempText.Substring(0, resultTempText.Length - 1);
             }
 
             if (inputText.Length > 0)
-            {
                 inputText = inputText.Substring(0, inputText.Length - 1);
+
+            textResultBox.Text = resultTempText;
+            textInputBox.Text = inputText;
+        }
+
+        private void buttonDot_Click(object sender, EventArgs e)
+        {
+            if (inputText.Contains(".")) return;
+
+            if (string.IsNullOrEmpty(inputText))
+            {
+                inputText = "0.";
+                resultText += "0.";
+                resultTempText += "0.";
+            }
+            else
+            {
+                inputText += ".";
+                resultText += ".";
+                resultTempText += ".";
             }
 
-            textResultBox.Text = resultText;
             textInputBox.Text = inputText;
+            textResultBox.Text = resultTempText;
+        }
+
+        private void buttonPM_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(inputText)) return;
+
+            bool isNegative = inputText.StartsWith("-");
+            if (isNegative)
+            {
+                inputText = inputText.Substring(1);
+            }
+            else
+            {
+                inputText = "-" + inputText;
+            }
+
+            string[] parts = resultText.Split(' ');
+            for (int i = parts.Length - 1; i >= 0; i--)
+            {
+                if (!string.IsNullOrEmpty(parts[i]) && !"+-*/".Contains(parts[i]))
+                {
+                    parts[i] = inputText;
+                    break;
+                }
+            }
+            resultText = string.Join(" ", parts);
+
+            string[] tempParts = resultTempText.Split(' ');
+            for (int i = tempParts.Length - 1; i >= 0; i--)
+            {
+                if (!string.IsNullOrEmpty(tempParts[i]) && !"+-¡¿¡À".Contains(tempParts[i]))
+                {
+                    tempParts[i] = inputText;
+                    break;
+                }
+            }
+            resultTempText = string.Join(" ", tempParts);
+
+            textInputBox.Text = inputText;
+            textResultBox.Text = resultTempText;
         }
     }
 }

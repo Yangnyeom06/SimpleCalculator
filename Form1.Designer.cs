@@ -49,6 +49,8 @@
             buttonCE = new Button();
             buttonC = new Button();
             buttonDel = new Button();
+            buttonDot = new Button();
+            buttonPM = new Button();
             SuspendLayout();
             // 
             // title
@@ -274,11 +276,36 @@
             buttonDel.UseVisualStyleBackColor = true;
             buttonDel.Click += buttonDel_Click;
             // 
+            // buttonDot
+            // 
+            buttonDot.Font = new Font("맑은 고딕", 15F);
+            buttonDot.Location = new Point(179, 504);
+            buttonDot.Name = "buttonDot";
+            buttonDot.Size = new Size(72, 47);
+            buttonDot.TabIndex = 21;
+            buttonDot.Text = ".";
+            buttonDot.UseVisualStyleBackColor = true;
+            buttonDot.Click += buttonDot_Click;
+            // 
+            // buttonPM
+            // 
+            buttonPM.Font = new Font("맑은 고딕", 15F);
+            buttonPM.Location = new Point(23, 504);
+            buttonPM.Name = "buttonPM";
+            buttonPM.Size = new Size(72, 47);
+            buttonPM.TabIndex = 22;
+            buttonPM.Text = "+/-";
+            buttonPM.UseVisualStyleBackColor = true;
+            buttonPM.Click += buttonPM_Click;
+          
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(374, 574);
+            Controls.Add(buttonPM);
+            Controls.Add(buttonDot);
             Controls.Add(buttonDel);
             Controls.Add(buttonC);
             Controls.Add(buttonCE);
@@ -329,5 +356,7 @@
         private Button buttonCE;
         private Button buttonC;
         private Button buttonDel;
+        private Button buttonDot;
+        private Button buttonPM;
     }
 }
